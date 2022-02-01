@@ -208,18 +208,35 @@ class Generator(models.Model):
 
      def tirarDados(self, total, times, dados):
           final = []
-          for i in total:
+          for i in range(total):
                nums = []
                for j in times:
                     nums.append(random.randint(0, dados)+1)
                comparardados = dados
-               for aux in dados: #comparar menos
+               excluir = 0
+               for aux in dados: #sacar el menor
                     if nums[aux] < comparardados:
                          excluir = aux
                          comparardados = nums[aux]
+               resultado = 0
                for j in dados:
                     if not j == excluir:
-                         final.append(nums[j])
+                         resultado += nums[j]
+               final.append(resultado)
+
+          comparardados = final[0]
+          excluir = 0
+          resultado = 0
+          """
+          for aux in final:  # sacar el menor
+               if final[aux] < comparardados:
+                    excluir = aux
+                    comparardados = final[aux]
+
+          for j in final:
+               if not j == excluir:
+                    resultado = final[j]
+          """
 
 
      def calcularModificador(self, atributo):
