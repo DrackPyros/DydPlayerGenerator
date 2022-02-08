@@ -1,7 +1,7 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-<!--
+
     <record model="ir.ui.view" id="dy_d.list">
       <field name="name">DyD list</field>
       <field name="model">dy_d.dy_d</field>
@@ -13,7 +13,7 @@
         </tree>
       </field>
     </record>
--->
+
 
     <!-- actions opening views on models -->
 <!--
@@ -56,5 +56,25 @@
     <menuitem name="Server to list" id="dy_d" parent="dy_d.menu_2"
               action="dy_d.action_server"/>
 -->
+
+    <data>
+        <!-- acción que se ejecutará al pulsar en el menú "Cursos' -->
+        <record model="ir.actions.act_window" id="dy_d.action_lista_de_personajes">
+            <field name="name">Personajes</field>
+            <field name="res_model">dy_d.generator</field>
+            <field name="view_mode">tree, form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Crea un personaje</p>
+            </field>
+        </record>
+        <!-- Menu superior -->
+        <menuitem name="DyD" id="dy_d.menu_principal"/>
+        <!-- Primer nivel del menú lateral -->
+        <menuitem name="DyD" id="dy_d.menu_modulo" parent="dy_d.menu_principal"/>
+        <!-- Opción 'Cursos' del menú lateral -->
+        <menuitem name="Generator" id="dy_d.menu_personajes" parent="dy_d.menu_modulo"
+          action="dy_d.action_lista_de_personajes"/>
+    </data>
+
   </data>
 </odoo>

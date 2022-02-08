@@ -26,5 +26,46 @@
             <field name="value">40</field>
           </record>
 -->
+        <!--
+        <record id="curso1" model="dy_d.generator'">
+            <field nane="name">Introducción a la programación</field>
+            <field name="description">Curso de introducción a la programación en Python.</field>
+        </record>
+        <record id="curso2" model="miacademia.curso">
+            <field nane="name">Programación avanzada</field>
+            <field name="description">Curso de progranación avanzada en Python.</field>
+        </record>
+        -->
     </data>
+    <demo>
+        <record id="player1" model="dy_d.generator'">
+            <field name="Fuerza">5</field>
+            <field name="Destreza">3</field>
+            <field name="Constitución">6</field>
+            <field name="Inteligencia">9</field>
+            <field name="Sabiduria">10</field>
+            <field name="Carisma">1</field>
+
+            <field name="PG">0</field>
+            <field name="CA">0</field>
+            <field name="Nombre">Pipo</field>
+            <field name="Jugador">Pep</field>
+
+            <field name="Clase">Bárbaro</field>
+            <field name="Nivel">1</field>
+            <field name="Raza">Enano</field>
+            <field name="Alineamiento">N Neutral</field>
+            <field name="Deidad">C'thun</field>
+
+            <field name="Tamaño">Pequeño</field>
+            <field name="Edad">36</field>
+            <field name="Sexo">Masculino</field>
+            <field name="Altura">350cm</field>
+            <field name="Peso">250kg</field>
+
+            <field name="Ojos">Oscuros</field>
+            <field name="Cabello">Castaño</field>
+            <field name="Piel">Clara</field>
+        </record>
+    </demo>
 </odoo>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Marcar modulos como carpeta root
-from odoo import models, fields, api
+from modulos.odoo import models, fields, api
 import random
 
 class Generator(models.Model):
@@ -22,17 +22,7 @@ class Generator(models.Model):
      ]
      razas = ["Humano", "Elfo", "Enano", "Semielfo", "Semiorco", "Gnomo", "Mediano"]
      atributos = ["Fuerza", "Destreza", "Constitución", "Inteligencia", "Sabiduria", "Carisma"]
-     alineamiento = [
-          "LB Legal-Bueno",
-          "NB Neutral-Bueno",
-          "CB Caotico-Bueno",
-          "LN Legal-Neutral",
-          "N Neutral",
-          "CN Caotico-Neutral",
-          "LM Legal-Maligno",
-          "NM Neutral-Maligno",
-          "CM Caotico-Maligno"
-     ]
+
      rasgos = {
           atributos[0]: fields.Integer(string='Fuerza', required=True),
           atributos[1]: fields.Integer(string='Destreza', required=True),
@@ -41,25 +31,25 @@ class Generator(models.Model):
           atributos[4]: fields.Integer(string='Sabiduria', required=True),
           atributos[5]: fields.Integer(string='Carisma', required=True),
 
-          "PG": fields.Integer(string='Puntos de golpe', required=True),
-          "CA": fields.Integer(string='Clase de armadura', required=True),
+          "pg": fields.Integer(string='Puntos de golpe', required=True),
+          "ca": fields.Integer(string='Clase de armadura', required=True),
 
-          "Nombre": fields.Char(string='Nombre de personaje', required=True),
-          "Jugador": fields.Char(string='Nombre de jugador', required=True),
-          "Clase": fields.Char(string='Clase', required=True),
-          "Nivel": fields.Integer(string='Nivel', required=True),
-          "Raza": fields.Char(string='Raza', required=True),
-          "Alineamiento": fields.Char(string='Alineamiento', required=True),
+          "nombre": fields.Char(string='Nombre de personaje', required=True),
+          "jugador": fields.Char(string='Nombre de jugador', required=True),
+          "clase": fields.Char(string='Clase', required=True),
+          "nivel": fields.Integer(string='Nivel', required=True),
+          "raza": fields.Char(string='Raza', required=True),
+          "alineamiento": fields.Char(string='Alineamiento', required=True),
 
-          "Deidad": fields.Char(string='Deidad'),
-          "Tamaño": fields.Char(string='Tamanyo'),
-          "Edad": fields.Integer(string='Edad'),
-          "Sexo": fields.Char(string='Sexo'),
-          "Altura": fields.Integer(string='Altura (cm)'),
-          "Peso": fields.Float(string='Peso'),
-          "Ojos": fields.Char(string='Color de ojos'),
-          "Cabello": fields.Char(string='Color del cabello'),
-          "Piel": fields.Char(string='Tono de piel')
+          "deidad": fields.Char(string='Deidad'),
+          "tamano": fields.Char(string='Tamanyo'),
+          "edad": fields.Integer(string='Edad'),
+          "sexo": fields.Char(string='Sexo'),
+          "altura": fields.Integer(string='Altura (cm)'),
+          "peso": fields.Float(string='Peso'),
+          "ojos": fields.Char(string='Color de ojos'),
+          "cabello": fields.Char(string='Color del cabello'),
+          "piel": fields.Char(string='Tono de piel')
      }
 
 
