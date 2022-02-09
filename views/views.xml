@@ -1,15 +1,35 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-
     <record model="ir.ui.view" id="dy_d.list">
       <field name="name">DyD list</field>
-      <field name="model">dy_d.dy_d</field>
+      <field name="model">dy_d.generator</field>
       <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+        <tree string = "vistaPersonajes">
+          <field name="Raza"/>
+          <field name="Clase"/>
+
+          <field name="Fuerza"/>
+          <field name="Destreza"/>
+          <field name="Constitucion"/>
+          <field name="Inteligencia"/>
+          <field name="Sabiduria"/>
+          <field name="Carisma"/>
+          <field name="PG"/>
+          <field name="CA"/>
+          <field name="Nombre"/>
+          <field name="Jugador"/>
+          <field name="Nivel"/>
+          <field name="Alineamiento"/>
+          <field name="Deidad"/>
+          <field name="Tamaño"/>
+          <field name="Edad"/>
+          <field name="Sexo"/>
+          <field name="Altura"/>
+          <field name="Peso"/>
+          <field name="Ojos"/>
+          <field name="Cabello"/>
+          <field name="Piel"/>
         </tree>
       </field>
     </record>
@@ -62,7 +82,7 @@
         <record model="ir.actions.act_window" id="dy_d.action_lista_de_personajes">
             <field name="name">Personajes</field>
             <field name="res_model">dy_d.generator</field>
-            <field name="view_mode">tree, form</field>
+            <field name="view_mode">tree,form</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Crea un personaje</p>
             </field>
@@ -72,7 +92,7 @@
         <!-- Primer nivel del menú lateral -->
         <menuitem name="DyD" id="dy_d.menu_modulo" parent="dy_d.menu_principal"/>
         <!-- Opción 'Cursos' del menú lateral -->
-        <menuitem name="Generator" id="dy_d.menu_personajes" parent="dy_d.menu_modulo"
+        <menuitem name="Personajes" id="dy_d.menu_personajes" parent="dy_d.menu_modulo"
           action="dy_d.action_lista_de_personajes"/>
     </data>
 

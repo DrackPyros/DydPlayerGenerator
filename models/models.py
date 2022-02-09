@@ -33,33 +33,62 @@ class Generator(models.Model):
           "NM Neutral-Maligno",
           "CM Caotico-Maligno"
      ]
+
+     Raza = fields.Char(string='Raza', required=True)
+     Clase = fields.Char(string='Clase', required=True)
+
+     Fuerza = fields.Integer(string='Fuerza', compute='selectorAtributo')
+     Destreza = fields.Integer(string='Destreza', required=True)
+     Constitucion = fields.Integer(string='Constitucion', required=True)
+     Inteligencia = fields.Integer(string='Inteligencia', required=True)
+     Sabiduria =  fields.Integer(string='Sabiduria', required=True)
+     Carisma = fields.Integer(string='Carisma', required=True)
+
+     PG = fields.Integer(string='Puntos de golpe', required=True)
+     CA = fields.Integer(string='Clase de armadura', required=True)
+
+     Nombre = fields.Char(string='Nombre de personaje', required=True)
+     Jugador = fields.Char(string='Nombre de jugador', required=True)
+     Nivel = fields.Integer(string='Nivel', required=True)
+     Alineamiento = fields.Char(string='Alineamiento', required=True)
+
+     Deidad = fields.Char(string='Deidad')
+     Tamaño = fields.Char(string='Tamaño')
+     Edad = fields.Integer(string='Edad')
+     Sexo = fields.Char(string='Sexo')
+     Altura = fields.Integer(string='Altura (cm)')
+     Peso = fields.Float(string='Peso')
+     Ojos = fields.Char(string='Color de ojos')
+     Cabello = fields.Char(string='Color del cabello')
+     Piel = fields.Char(string='Tono de piel')
+
      rasgos = {
-          atributos[0]: fields.Integer(string='Fuerza', required=True),
-          atributos[1]: fields.Integer(string='Destreza', required=True),
-          atributos[2]: fields.Integer(string='Constitucion', required=True),
-          atributos[3]: fields.Integer(string='Inteligencia', required=True),
-          atributos[4]: fields.Integer(string='Sabiduria', required=True),
-          atributos[5]: fields.Integer(string='Carisma', required=True),
+          atributos[0]: Fuerza,
+          atributos[1]: Destreza,
+          atributos[2]: Constitucion,
+          atributos[3]: Inteligencia,
+          atributos[4]: Sabiduria,
+          atributos[5]: Carisma,
 
-          "PG": fields.Integer(string='Puntos de golpe', required=True),
-          "CA": fields.Integer(string='Clase de armadura', required=True),
+          "PG": PG,
+          "CA": CA,
 
-          "Nombre": fields.Char(string='Nombre de personaje', required=True),
-          "Jugador": fields.Char(string='Nombre de jugador', required=True),
-          "Clase": fields.Char(string='Clase', required=True),
-          "Nivel": fields.Integer(string='Nivel', required=True),
-          "Raza": fields.Char(string='Raza', required=True),
-          "Alineamiento": fields.Char(string='Alineamiento', required=True),
+          "Nombre": Nombre,
+          "Jugador": Jugador,
+          "Clase": Clase,
+          "Nivel": Nivel,
+          "Raza": Raza,
+          "Alineamiento": Alineamiento,
 
-          "Deidad": fields.Char(string='Deidad'),
-          "Tamaño": fields.Char(string='Tamanyo'),
-          "Edad": fields.Integer(string='Edad'),
-          "Sexo": fields.Char(string='Sexo'),
-          "Altura": fields.Integer(string='Altura (cm)'),
-          "Peso": fields.Float(string='Peso'),
-          "Ojos": fields.Char(string='Color de ojos'),
-          "Cabello": fields.Char(string='Color del cabello'),
-          "Piel": fields.Char(string='Tono de piel')
+          "Deidad": Deidad,
+          "Tamaño": Tamaño,
+          "Edad": Edad,
+          "Sexo": Sexo,
+          "Altura": Altura,
+          "Peso": Peso,
+          "Ojos": Ojos,
+          "Cabello": Cabello,
+          "Piel": Piel
      }
 
 
@@ -216,6 +245,7 @@ class Generator(models.Model):
      }
 
 
+
      def tirarDados(self, total, times, dados):
           final = []
           for i in range(total):
@@ -252,6 +282,10 @@ class Generator(models.Model):
      def calcularModificador(self, atributo):
           atributo = (atributo - 10) // 2
           return atributo
+
+     @api.onchange()
+     def selectorAtributo(self):
+          self.Fuerza = 0
 
      # def sobrenombre(self):
           # Dependiendo de la clase tendrán 5 sobrenombres posibles.
