@@ -33,72 +33,19 @@ class Generator(models.Model):
           "NM Neutral-Maligno",
           "CM Caotico-Maligno"
      ]
-
-     Raza = fields.Char(string='Raza', required=True)
-     Clase = fields.Char(string='Clase', required=True)
-
-     Fuerza = fields.Integer(string='Fuerza', compute='selectorAtributo')
-     Destreza = fields.Integer(string='Destreza', required=True)
-     Constitucion = fields.Integer(string='Constitucion', required=True)
-     Inteligencia = fields.Integer(string='Inteligencia', required=True)
-     Sabiduria =  fields.Integer(string='Sabiduria', required=True)
-     Carisma = fields.Integer(string='Carisma', required=True)
-
-     PG = fields.Integer(string='Puntos de golpe', required=True)
-     CA = fields.Integer(string='Clase de armadura', required=True)
-
-     Nombre = fields.Char(string='Nombre de personaje', required=True)
-     Jugador = fields.Char(string='Nombre de jugador', required=True)
-     Nivel = fields.Integer(string='Nivel', required=True)
-     Alineamiento = fields.Char(string='Alineamiento', required=True)
-
-     Deidad = fields.Char(string='Deidad')
-     Tamaño = fields.Char(string='Tamaño')
-     Edad = fields.Integer(string='Edad')
-     Sexo = fields.Char(string='Sexo')
-     Altura = fields.Integer(string='Altura (cm)')
-     Peso = fields.Float(string='Peso')
-     Ojos = fields.Char(string='Color de ojos')
-     Cabello = fields.Char(string='Color del cabello')
-     Piel = fields.Char(string='Tono de piel')
-
-     rasgos = {
-          atributos[0]: Fuerza,
-          atributos[1]: Destreza,
-          atributos[2]: Constitucion,
-          atributos[3]: Inteligencia,
-          atributos[4]: Sabiduria,
-          atributos[5]: Carisma,
-
-          "PG": PG,
-          "CA": CA,
-
-          "Nombre": Nombre,
-          "Jugador": Jugador,
-          "Clase": Clase,
-          "Nivel": Nivel,
-          "Raza": Raza,
-          "Alineamiento": Alineamiento,
-
-          "Deidad": Deidad,
-          "Tamaño": Tamaño,
-          "Edad": Edad,
-          "Sexo": Sexo,
-          "Altura": Altura,
-          "Peso": Peso,
-          "Ojos": Ojos,
-          "Cabello": Cabello,
-          "Piel": Piel
+     salvacion = {
+          clases[0]: atributos[0],
+          clases[1]: atributos[5],
+          clases[2]: atributos[4],
+          clases[3]: atributos[4],
+          clases[4]: atributos[1],
+          clases[5]: atributos[0],
+          clases[6]: atributos[5],
+          clases[7]: atributos[3],
+          clases[8]: atributos[4],
+          clases[9]: atributos[5],
+          clases[10]: atributos[2],
      }
-
-
-     vecestotales = 7
-     veces = 4
-     dados = 6
-
-
-     # quitando el dado más bajo en cada tirada. e suman los dados de cada tirada, se elimina la tirada más baja y se reparten pseudo-aleatoriamente, teniendo más probabilidad de asignar la tirada más alta al atributo principal del personaje
-
      bufos = {
           razas[0]: [0, 0, 0, 0, 0, 0],
           razas[1]: [0, 2, -2, 0, 0, 0],
@@ -244,48 +191,123 @@ class Generator(models.Model):
                ]
      }
 
+     Raza = fields.Char(string='Raza', required=True)
+     Clase = fields.Char(string='Clase', required=True)
+
+     Fuerza = fields.Integer(string='Fuerza', compute='selectorAtributo')
+     Destreza = fields.Integer(string='Destreza', compute='selectorAtributo')
+     Constitucion = fields.Integer(string='Constitucion', compute='selectorAtributo')
+     Inteligencia = fields.Integer(string='Inteligencia', compute='selectorAtributo')
+     Sabiduria = fields.Integer(string='Sabiduria', compute='selectorAtributo')
+     Carisma = fields.Integer(string='Carisma', compute='selectorAtributo')
+
+     PG = fields.Integer(string='Puntos de golpe', required=True)
+     CA = fields.Integer(string='Clase de armadura', required=True)
+
+     Nombre = fields.Char(string='Nombre de personaje', required=True)
+     Jugador = fields.Char(string='Nombre de jugador', required=True)
+     Nivel = fields.Integer(string='Nivel', required=True)
+     Alineamiento = fields.Char(string='Alineamiento', required=True)
+
+     Deidad = fields.Char(string='Deidad')
+     Tamaño = fields.Char(string='Tamaño')
+     Edad = fields.Integer(string='Edad')
+     Sexo = fields.Char(string='Sexo')
+     Altura = fields.Integer(string='Altura (cm)')
+     Peso = fields.Float(string='Peso')
+     Ojos = fields.Char(string='Color de ojos')
+     Cabello = fields.Char(string='Color del cabello')
+     Piel = fields.Char(string='Tono de piel')
+
+     rasgos = {
+          atributos[0]: Fuerza,
+          atributos[1]: Destreza,
+          atributos[2]: Constitucion,
+          atributos[3]: Inteligencia,
+          atributos[4]: Sabiduria,
+          atributos[5]: Carisma,
+
+          "PG": PG,
+          "CA": CA,
+
+          "Nombre": Nombre,
+          "Jugador": Jugador,
+          "Clase": Clase,
+          "Nivel": Nivel,
+          "Raza": Raza,
+          "Alineamiento": Alineamiento,
+
+          "Deidad": Deidad,
+          "Tamaño": Tamaño,
+          "Edad": Edad,
+          "Sexo": Sexo,
+          "Altura": Altura,
+          "Peso": Peso,
+          "Ojos": Ojos,
+          "Cabello": Cabello,
+          "Piel": Piel
+     }
 
 
-     def tirarDados(self, total, times, dados):
-          final = []
-          for i in range(total):
+     def tirarDados(self):
+          veces = 7
+          ndados = 4
+          tdados = 6
+          tiradasFinales = []
+          for i in range(veces):
                nums = []
-               for j in times:
-                    nums.append(random.randint(0, dados)+1)
-               comparardados = dados
+               for j in range(ndados):  # generar tiradas
+                    nums.append(random.randint(0, tdados) + 1)  # 1 a 6
+
+               # sacar el menor
+               comparardados = tdados
                excluir = 0
-               for aux in dados: #sacar el menor
+               for aux in range(ndados):
                     if nums[aux] < comparardados:
                          excluir = aux
                          comparardados = nums[aux]
+
+               # quitar el menor
                resultado = 0
-               for j in dados:
-                    if not j == excluir:
-                         resultado += nums[j]
-               final.append(resultado)
+               for l in range(ndados):
+                    if not l == excluir:
+                         resultado += nums[l]
 
-          comparardados = final[0]
-          excluir = 0
-          resultado = 0
-          """
-          for aux in final:  # sacar el menor
-               if final[aux] < comparardados:
-                    excluir = aux
-                    comparardados = final[aux]
+               tiradasFinales.append(resultado)
 
-          for j in final:
-               if not j == excluir:
-                    resultado = final[j]
-          """
+          excluir = tiradasFinales[0]
+          for i in range(len(tiradasFinales)):
+               for j in range(len(tiradasFinales)):
+                    if excluir > tiradasFinales[j]:
+                         excluir = tiradasFinales[j]
+          tiradasFinales.remove(excluir)
+          print(tiradasFinales)
+          return tiradasFinales
 
 
      def calcularModificador(self, atributo):
           atributo = (atributo - 10) // 2
           return atributo
 
+
      @api.onchange()
      def selectorAtributo(self):
           self.Fuerza = 0
+          clasePrueba = clases[0]
+          razaPreuba = razas[0]
+          atributos = tirarDados()
+
+          # Ya los generamos aleatoriamente por tanto no es necesario hacer otro random
+          for aux in range(len(clases)):
+               if clasePrueba == aux:
+
+          f = max(atributos)
+          atributos.remove(max(atributos))
+          d = atributos[0]
+          c = atributos[1]
+          i = atributos[2]
+          s = atributos[3]
+          c = atributos[4]
 
      # def sobrenombre(self):
           # Dependiendo de la clase tendrán 5 sobrenombres posibles.
