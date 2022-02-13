@@ -9,27 +9,36 @@
           <field name="Raza"/>
           <field name="Clase"/>
 
+          <field name="Nombre"/>
+          <field name="Jugador"/>
+          <field name="Nivel"/>
+          <field name="PG"/>
+          <field name="CA"/>
+          <field name="Alineamiento"/>
+          <field name="Tamaño"/>
+          <field name="Sexo"/>
+
           <field name="Fuerza"/>
           <field name="Destreza"/>
           <field name="Constitucion"/>
           <field name="Inteligencia"/>
           <field name="Sabiduria"/>
           <field name="Carisma"/>
-          <field name="PG"/>
-          <field name="CA"/>
-          <field name="Nombre"/>
-          <field name="Jugador"/>
-          <field name="Nivel"/>
-          <field name="Alineamiento"/>
+
+          <field name="ModificadorAtaque"/>
+          <field name="SalvacionFortaleza"/>
+          <field name="SalvacionReflejos"/>
+          <field name="SalvacionVolutad"/>
+
+          <!--
           <field name="Deidad"/>
-          <field name="Tamaño"/>
           <field name="Edad"/>
-          <field name="Sexo"/>
           <field name="Altura"/>
           <field name="Peso"/>
           <field name="Ojos"/>
           <field name="Cabello"/>
           <field name="Piel"/>
+          -->
         </tree>
       </field>
     </record>

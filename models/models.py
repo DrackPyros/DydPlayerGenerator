@@ -2,6 +2,9 @@
 # Marcar modulos como carpeta root
 from odoo import models, fields, api
 import random
+import json
+
+from odoo.modules import get_module_resource
 
 
 class Generator(models.Model):
@@ -23,18 +26,20 @@ class Generator(models.Model):
     ]
     razas = ["Humano", "Elfo", "Enano", "Semielfo", "Semiorco", "Gnomo", "Mediano"]
     atributos = ["Fuerza", "Destreza", "Constitución", "Inteligencia", "Sabiduria", "Carisma"]
+    sex = ["Masculino", "Femenino"]
+    tamanyo = ["Pequeño", "Medio", "Grande"]
     alineamiento = [
-        "LB Legal-Bueno",
-        "NB Neutral-Bueno",
-        "CB Caotico-Bueno",
-        "LN Legal-Neutral",
-        "N Neutral",
-        "CN Caotico-Neutral",
-        "LM Legal-Maligno",
-        "NM Neutral-Maligno",
-        "CM Caotico-Maligno"
+        "LB (Legal-Bueno)",
+        "NB (Neutral-Bueno)",
+        "CB (Caotico-Bueno)",
+        "LN (Legal-Neutral)",
+        "N (Neutral)",
+        "CN (Caotico-Neutral)",
+        "LM (Legal-Maligno)",
+        "NM (Neutral-Maligno)",
+        "CM (Caotico-Maligno)"
     ]
-    salvacion = {
+    afinidad = {
         clases[0]: atributos[0],
         clases[1]: atributos[5],
         clases[2]: atributos[4],
@@ -46,6 +51,19 @@ class Generator(models.Model):
         clases[8]: atributos[4],
         clases[9]: atributos[5],
         clases[10]: atributos[2],
+    }
+    salvacion = {
+        clases[0]: [12, 1, 2, 0, 0],
+        clases[1]: [6, 0, 0, 2, 2],
+        clases[2]: [8, 0, 2, 0, 2],
+        clases[3]: [8, 0, 2, 0, 2],
+        clases[4]: [8, 1, 2, 2, 0],
+        clases[5]: [10, 1, 2, 0, 0],
+        clases[6]: [4, 0, 0, 0, 2],
+        clases[7]: [4, 0, 0, 0, 2],
+        clases[8]: [8, 0, 2, 2, 2],
+        clases[9]: [10, 1, 2, 0, 0],
+        clases[10]: [6, 0, 0, 2, 0],
     }
     bufos = {
         razas[0]: [0, 0, 0, 0, 0, 0],
@@ -71,11 +89,11 @@ class Generator(models.Model):
                 "el estirado",
                 "el silvano",
                 "el eterno",
-                "de las montañas nubladas"
+                "el de las montañas nubladas"
             ],
         razas[2]:
             [
-                "de las montañas azules",
+                "el de las montañas azules",
                 "el minero",
                 "barba roja",
                 "hijo de la montaña",
@@ -125,8 +143,7 @@ class Generator(models.Model):
             [
                 "el ágil",
                 "el rápido",
-                "el ojo",
-                "del halcón",
+                "el ojo del halcón",
             ],
         atributos[2]:
             [
@@ -191,6 +208,138 @@ class Generator(models.Model):
                 "el difícil de mirar"
             ]
     }
+    sobrenombresRazasFem = {
+        razas[0]:
+            [
+                "la hija del herrero",
+                "la hija del posadero",
+                "la huérfana",
+                "la vagabunda",
+                "la extranjera"
+            ],
+        razas[1]:
+            [
+                "orejas picudas",
+                "la estirada",
+                "la silvana",
+                "la eterna",
+                "la de las montañas nubladas"
+            ],
+        razas[2]:
+            [
+                "la de las montañas azules",
+                "la minera",
+                "hija de la montaña",
+                "Pulga"
+            ],
+        razas[3]:
+            [
+                "la bastarda",
+                "de las nieves",
+                "sin tierra",
+                "la sintecho"
+            ],
+        razas[4]:
+            [
+                "Machacacráneos",
+                "Hachachunga",
+                "Puñohierro",
+                "la orco",
+                "la paria de Mordor"
+            ],
+        razas[5]:
+            [
+                "la loca",
+                "Gnometoques",
+                "la pequeña",
+                "la hija del joyero",
+                "Kabum"
+            ],
+        razas[6]:
+            [
+                "la medio-hombre",
+                "la Hobbit",
+                "de la Comarca",
+                "la fumadora en pipa",
+                "la hija del molinero"
+            ]
+    }
+    sobrenombresAtributomayorFem = {
+        atributos[0]:
+            [
+                "la fuerte",
+                "la herrera",
+                "la bocadillo de nudillos"
+            ],
+        atributos[1]:
+            [
+                "la ágil",
+                "la rápida",
+                "la ojo de halcón",
+            ],
+        atributos[2]:
+            [
+                "la gorda",
+                "la roca",
+                "la piedra del molino",
+            ],
+        atributos[3]:
+            [
+                "la lista",
+                "la inteligente",
+                "Fistandantilus",
+            ],
+        atributos[4]:
+            [
+                "la sabia",
+                "la vividora",
+                "la conocedora de secretos",
+            ],
+        atributos[5]:
+            [
+                "la guapa",
+                "la imponente",
+                "pico de oro"
+            ]
+    }
+    sobrenombresAtributomenorFem = {
+        atributos[0]:
+            [
+                "la floja",
+                "caricias",
+                "dedos de papel"
+            ],
+        atributos[1]:
+            [
+                "la torpe",
+                "la lenta",
+                "manos de mantequilla"
+            ],
+        atributos[2]:
+            [
+                "la casi-inconsciente",
+                "la fofa",
+                "la flan"
+            ],
+        atributos[3]:
+            [
+                "la tonta",
+                "la incoherente",
+                "la corta de miras"
+            ],
+        atributos[4]:
+            [
+                "la ignorante",
+                "la sin rumbo",
+                "no-sabe-ni-contesta"
+            ],
+        atributos[5]:
+            [
+                "la fea",
+                "cara-de-pez",
+                "la difícil de mirar"
+            ]
+    }
 
     Raza = fields.Selection(string='Raza',
                             selection=[
@@ -216,59 +365,43 @@ class Generator(models.Model):
                                  (clases[9], clases[9]),
                              ], required=True, default=clases[0])
 
-    Fuerza = fields.Integer(string='Fuerza', compute='_selectorAtributo', store=True)
-    Destreza = fields.Integer(string='Destreza', compute='_selectorAtributo', store=True)
-    Constitucion = fields.Integer(string='Constitucion', compute='_selectorAtributo', store=True)
-    Inteligencia = fields.Integer(string='Inteligencia', compute='_selectorAtributo', store=True)
-    Sabiduria = fields.Integer(string='Sabiduria', compute='_selectorAtributo', store=True)
-    Carisma = fields.Integer(string='Carisma', compute='_selectorAtributo', store=True)
-
-    PG = fields.Integer(string='Puntos de golpe')
-    CA = fields.Integer(string='Clase de armadura')
-
-    Nombre = fields.Char(string='Nombre de personaje')
     Jugador = fields.Char(string='Nombre de jugador')
-    Nivel = fields.Integer(string='Nivel')
-    Alineamiento = fields.Char(string='Alineamiento')
+    Fuerza = fields.Integer(string='Fuerza', compute='selectorAtributo', store=True)
 
+    Nombre = fields.Char(string='Nombre de personaje', compute='selectorNombre', store=True)
+    Destreza = fields.Integer(string='Destreza', compute='selectorAtributo', store=True)
+
+    Nivel = fields.Integer(string='Nivel', compute='selectorAtributo', store=True)
+    Constitucion = fields.Integer(string='Constitucion', compute='selectorAtributo', store=True)
+
+    Alineamiento = fields.Char(string='Alineamiento', compute='selectorEspecial', store=True)
+    Inteligencia = fields.Integer(string='Inteligencia', compute='selectorAtributo', store=True)
+
+    PG = fields.Integer(string='Puntos de golpe', compute='selectorModificador', store=True)
+    Sabiduria = fields.Integer(string='Sabiduria', compute='selectorAtributo', store=True)
+
+    CA = fields.Integer(string='Clase de armadura', compute='selectorModificador', store=True)
+    Carisma = fields.Integer(string='Carisma', compute='selectorAtributo', store=True)
+
+    Tamaño = fields.Char(string='Tamaño', compute='selectorEspecial', store=True)
+    Sexo = fields.Char(string='Sexo', compute='selectorEspecial', store=True)
+
+    ModificadorAtaque = fields.Char(string='Modificador de Ataque', compute='selectorModificador', store=True)
+    SalvacionFortaleza = fields.Char(string='Salvacion de Fortaleza', compute='selectorModificador', store=True)
+    SalvacionReflejos = fields.Char(string='Salvacion de Reflejos', compute='selectorModificador', store=True)
+    SalvacionVolutad = fields.Char(string='Salvacion de Volutad', compute='selectorModificador', store=True)
+
+    """ 
     Deidad = fields.Char(string='Deidad')
-    Tamaño = fields.Char(string='Tamaño')
     Edad = fields.Integer(string='Edad')
-    Sexo = fields.Char(string='Sexo')
     Altura = fields.Integer(string='Altura (cm)')
     Peso = fields.Float(string='Peso')
     Ojos = fields.Char(string='Color de ojos')
     Cabello = fields.Char(string='Color del cabello')
     Piel = fields.Char(string='Tono de piel')
-
-    rasgos = {
-        atributos[0]: Fuerza,
-        atributos[1]: Destreza,
-        atributos[2]: Constitucion,
-        atributos[3]: Inteligencia,
-        atributos[4]: Sabiduria,
-        atributos[5]: Carisma,
-
-        "PG": PG,
-        "CA": CA,
-
-        "Nombre": Nombre,
-        "Jugador": Jugador,
-        "Clase": Clase,
-        "Nivel": Nivel,
-        "Raza": Raza,
-        "Alineamiento": Alineamiento,
-
-        "Deidad": Deidad,
-        "Tamaño": Tamaño,
-        "Edad": Edad,
-        "Sexo": Sexo,
-        "Altura": Altura,
-        "Peso": Peso,
-        "Ojos": Ojos,
-        "Cabello": Cabello,
-        "Piel": Piel
-    }
+    """
+    claseOld = ""
+    razaOld = ""
 
     def tirarDados(self):
         veces = 7
@@ -309,12 +442,35 @@ class Generator(models.Model):
         atributo = (atributo - 10) // 2
         return atributo
 
-    @api.depends('Clase', 'Raza')
-    def _selectorAtributo(self):
-        clasePrueba = self.clases[0]
-        razaPrueba = self.razas[0]
+    def generador(self):
+        json_file_path = get_module_resource('dy_d', 'models/', 'nombres.json')
+        f = open(json_file_path)
+        data = json.load(f)
+        nombre = ""
         for persona in self.filtered('Clase'):
-            # if not la misma raza / clase
+            r = persona.Raza
+            if r != self.razas[3] and r != self.razas[4]:
+                nombre = data["nombres"][r][persona.Sexo][random.randint(0, len(data["nombres"][r][persona.Sexo]) - 1)]
+                nombre += " " + data["nombres"][r]["Apellidos"][
+                    random.randint(0, len(data["nombres"][r]["Apellidos"]) - 1)]
+            else:
+                if r == self.razas[3]:
+                    r = self.razas[random.randint(0, 1)]
+                    nombre = data["nombres"][r][persona.Sexo][
+                        random.randint(0, len(data["nombres"][r][persona.Sexo]) - 1)]
+                    nombre += " " + data["nombres"][r]["Apellidos"][
+                        random.randint(0, len(data["nombres"][r]["Apellidos"]) - 1)]
+                else:
+                    nombre = data["nombres"][r][persona.Sexo][
+                        random.randint(0, len(data["nombres"][r][persona.Sexo]) - 1)]
+        return nombre
+
+    @api.depends('Clase', 'Raza')
+    def selectorAtributo(self):
+        for persona in self.filtered('Clase'):
+            # if self.claseOld != persona.Clase and self.razaOld != persona.Raza:
+            clasePrueba = persona.Clase
+            razaPrueba = persona.Raza
             atributos = self.tirarDados()
 
             att = {
@@ -325,7 +481,7 @@ class Generator(models.Model):
                 self.atributos[4]: 0,
                 self.atributos[5]: 0
             }
-            attMax = self.salvacion[clasePrueba]
+            attMax = self.afinidad[clasePrueba]
             att[attMax] = max(atributos)
             atributos.remove(max(atributos))
             num = 0
@@ -335,18 +491,67 @@ class Generator(models.Model):
                     att[m] = atributos[num]
                     num += 1
 
-            persona.Fuerza = att[self.atributos[0]]
-            persona.Destreza = att[self.atributos[1]]
-            persona.Constitucion = att[self.atributos[2]]
-            persona.Inteligencia = att[self.atributos[3]]
-            persona.Sabiduria = att[self.atributos[4]]
-            persona.Carisma = att[self.atributos[5]]
+            persona.Fuerza = att[self.atributos[0]] + self.bufos[razaPrueba][0]
+            persona.Destreza = att[self.atributos[1]] + self.bufos[razaPrueba][1]
+            persona.Constitucion = att[self.atributos[2]] + self.bufos[razaPrueba][2]
+            persona.Inteligencia = att[self.atributos[3]] + self.bufos[razaPrueba][3]
+            persona.Sabiduria = att[self.atributos[4]] + self.bufos[razaPrueba][4]
+            persona.Carisma = att[self.atributos[5]] + self.bufos[razaPrueba][5]
+            persona.Nivel = 1
+            if razaPrueba == self.razas[4] and persona.Inteligencia < 3:
+                persona.Inteligencia = 3
+            # self.claseOld = persona.Clase
+            # self.razaOld = persona.Raza
 
-    # def sobrenombre(self):
-    # Dependiendo de la clase tendrán 5 sobrenombres posibles.
-    # Dependiendo de la raza tendrán 5 sobrenombres posibles.
-    # Si tienen algún atributo mayor o igual a 18 tendrán 3 sobrenombres por atributo.
-    # Si tienen algún atributo menor o igual a 5 tendrán 3 sobrenombres por atributo.
+    @api.depends('Clase', 'Raza')
+    def selectorNombre(self):
+        for persona in self.filtered('Clase'):
+            att = {
+                self.atributos[0]: persona.Fuerza,
+                self.atributos[1]: persona.Destreza,
+                self.atributos[2]: persona.Constitucion,
+                self.atributos[3]: persona.Inteligencia,
+                self.atributos[4]: persona.Sabiduria,
+                self.atributos[5]: persona.Carisma,
+            }
+            nombre = self.generador()
+            if persona.Sexo == self.sex[0]:
+                nombrePosible = self.sobrenombresRazas[persona.Raza]
+                for i in range(len(att)):
+                    if att[self.atributos[i]] >= 18:
+                        nombrePosible += self.sobrenombresAtributomayor[self.atributos[i]]
+                    if att[self.atributos[i]] <= 5:
+                        nombrePosible += self.sobrenombresAtributomenor[self.atributos[i]]
+            else:
+                nombrePosible = self.sobrenombresRazasFem[persona.Raza]
+                for i in range(len(att)):
+                    if att[self.atributos[i]] >= 18:
+                        nombrePosible += self.sobrenombresAtributomayorFem[self.atributos[i]]
+                    if att[self.atributos[i]] <= 5:
+                        nombrePosible += self.sobrenombresAtributomenorFem[self.atributos[i]]
+            persona.Nombre = nombre + " '" + nombrePosible[random.randint(0, len(nombrePosible)-1)] + "'"
+
+    @api.depends('Clase', 'Raza')
+    def selectorEspecial(self):
+        for persona in self.filtered('Clase'):
+            persona.Sexo = self.sex[random.randint(0, len(self.sex)-1)]
+            if persona.Raza == self.razas[2] or persona.Raza == self.razas[5]:
+                persona.Tamaño = self.tamanyo[random.randint(0, len(self.tamanyo) - 2)]
+            else:
+                persona.Tamaño = self.tamanyo[random.randint(0, len(self.tamanyo) - 1)]
+            persona.Alineamiento = self.alineamiento[random.randint(0, len(self.alineamiento)-1)]
+
+    @api.depends('Clase', 'Raza')
+    def selectorModificador(self):
+        for persona in self.filtered('Clase'):
+            persona.ModificadorAtaque = "+" + str(self.salvacion[persona.Clase][1])
+            persona.SalvacionVolutad = "+" + str(self.calcularModificador(persona.Sabiduria) + self.salvacion[persona.Clase][4])
+            persona.SalvacionReflejos = "+" + str(self.calcularModificador(persona.Destreza) + self.salvacion[persona.Clase][3])
+            persona.SalvacionFortaleza = "+" + str(self.calcularModificador(persona.Constitucion) + self.salvacion[persona.Clase][2])
+            persona.CA = 10
+            #persona.PG = self.salvacion[persona.Clase][1] en D&D cuando creas un pj lvl 1 los PG son el valor maximo del dado no hay que calcularlo
+            persona.PG = random.randint(1, self.salvacion[persona.Clase][0]-1) + self.calcularModificador(persona.Constitucion)
+
 
 #     @api.depends('value')
 #     def _value_pc(self):
